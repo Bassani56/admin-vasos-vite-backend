@@ -14,10 +14,10 @@
   ],
   "env": {
     "MONGO_URI": "@mongo_uri",
-    "AWS_BUCKET": "@aws_bucket",
-    "AWS_REGION": "@aws_region",
-    "AWS_ACCESS_KEY_ID": "@aws_access_key_id",
-    "AWS_SECRET_ACCESS_KEY": "@aws_secret_access_key",
+    "AWS3_BUCKET": "@aws_bucket",
+    "AWS3_REGION": "@aws_region",
+    "AWS3_ACCESS_KEY_ID": "@aws_access_key_id",
+    "AWS3_SECRET_ACCESS_KEY": "@aws_secret_access_key",
     "CORS_ORIGINS": "@cors_origins"
   }
 }
