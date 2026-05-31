@@ -244,7 +244,6 @@ app.put('/products/:id', async (req, res) => {
       erro: error.message || 'Erro ao atualizar produto',
       details: error.errors ? Object.keys(error.errors).map(key => error.errors[key].message) : []
     });
-    res.status(500).json({ erro: error.message });
   }
 });
 
@@ -322,9 +321,16 @@ const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/meu_banco';
 
 // Conectar ao MongoDB com tratamento de erro
 mongoose.connect(mongoUri, {
-    dbName: 'meu_banco'
+    dbName: 'meu_banco',
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 5000
 }).catch(error => {
   console.error('Erro ao conectar ao MongoDB:', error.message);
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Exportar para Vercel/serverless e para desenvolvimento local
