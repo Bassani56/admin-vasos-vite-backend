@@ -3,30 +3,13 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb",
-        "includeFiles": "models/**"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/health",
-      "dest": "server.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "/server.js"
     }
-  ],
-  "env": {
-    "MONGO_URI": "@mongo_uri",
-    "AWS3_ACCESS_KEY": "@aws3_access_key",
-    "AWS3_SECRET_KEY": "@aws3_secret_key",
-    "AWS3_REGION": "@aws3_region",
-    "AWS3_BUCKET": "@aws3_bucket",
-    "CORS_ORIGINS": "@cors_origins",
-    "NODE_ENV": "production"
-  }
+  ]
 }
