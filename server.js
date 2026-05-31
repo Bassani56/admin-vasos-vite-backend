@@ -11,10 +11,15 @@ const Forms = require('./models/InputForm')
 const app = express()
 app.use(express.json())
 
-const allowedOrigins = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
-  : [];
-
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://admin-vasos-vite-frontend.vercel.app/",
+    "http://localhost:5174",
+    ...(process.env.FRONTEND_URL || "")
+        .split(",")
+        .map(origin => origin.trim())
+        .filter(Boolean)
+]
 const corsOptions = {};
 if (allowedOrigins.length > 0) {
   corsOptions.origin = function (origin, callback) {
