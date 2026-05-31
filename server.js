@@ -56,7 +56,7 @@ app.post("/upload", upload.array("images", 10), async (req, res) => {
         file.mimetype
       );
 
-      const url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      const url = `https://${process.env.AWS3_BUCKET}.s3.${process.env.AWS3_REGION}.amazonaws.com/${fileName}`;
 
       uploadedImages.push({
         fileName,
