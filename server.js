@@ -13,26 +13,46 @@ app.use(express.json())
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://admin-vasos-vite-frontend.vercel.app/",
+    "https://new-vite-vasos-frontend.vercel.app",
     "http://localhost:5174",
+    "https://admin-vasos-vite-frontend.vercel.app",
     ...(process.env.FRONTEND_URL || "")
         .split(",")
         .map(origin => origin.trim())
         .filter(Boolean)
 ]
-const corsOptions = {};
-if (allowedOrigins.length > 0) {
-  corsOptions.origin = function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked by server: ${origin}`));
+
+app.use(cors({
+    origin(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true)
+        }
+        return callback(new Error("Origem nao permitida pelo CORS"))
+    },
+    optionsSuccessStatus: 200
+}))
+
+// Função para conectar ao MongoDB sob demanda
+async function conectarBanco() {
+    if (mongoose.connection.readyState >= 1) {
+        return
     }
-  };
+
+    await mongoose.connect(process.env.MONGO_URI, {
+        dbName: 'meu_banco'
+    })
 }
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+// Middleware para conectar ao banco antes de cada requisição
+app.use(async (req, res, next) => {
+    try {
+        await conectarBanco()
+        next()
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ erro: 'Erro ao conectar ao banco de dados' })
+    }
+})
 
 
 const multer = require("multer");
@@ -322,27 +342,16 @@ app.delete('/products/:id', async (req, res) => {
   }
 });
 
-const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/meu_banco';
-
-// Conectar ao MongoDB com tratamento de erro
-mongoose.connect(mongoUri, {
-    dbName: 'meu_banco',
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 5000
-}).catch(error => {
-  console.error('Erro ao conectar ao MongoDB:', error.message);
-});
-
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Exportar para Vercel/serverless e para desenvolvimento local
-if (process.env.NODE_ENV !== 'production') {
+// Executar localmente ou em serverless
+if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`Server rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
   });
 }
 
