@@ -320,11 +320,19 @@ app.delete('/products/:id', async (req, res) => {
 
 const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/meu_banco';
 
+// Conectar ao MongoDB com tratamento de erro
 mongoose.connect(mongoUri, {
     dbName: 'meu_banco'
-})
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server rodando na porta ${PORT}`);
+}).catch(error => {
+  console.error('Erro ao conectar ao MongoDB:', error.message);
 });
+
+// Exportar para Vercel/serverless e para desenvolvimento local
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server rodando na porta ${PORT}`);
+  });
+}
+
+module.exports = app;
