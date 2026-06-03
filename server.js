@@ -238,6 +238,33 @@ app.post('/products', async (req, res) => {
   }
 });
 
+
+app.put('/products/:id/auto-description', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const produto = await Produto.findById(id);
+    
+    const descricao = `O ${produto.titulo_geral} combina um visual moderno com textura escovada que destaca sua presença em qualquer ambiente. 
+                            Versátil e elegante, é ideal para plantas médias e para compor espaços internos ou externos.
+                            Material: Ceramica artesanal
+                            Medidas: ${produto.variantes.map(v => v.tamanho).filter(t => t).join(', ')}
+                            Acabamentos disponiveis: ${[...new Set(produto.variantes.map(v => v.acabamento))].join(', ')}
+                            Por ser artesanal, cada peca pode apresentar pequenas variacoes, tornando cada produto unico e especial.
+                            Caso queira um acabamento personalizado, entre em contato conosco para discutir suas preferencias.`;
+
+
+    if (produto.descricao == "") {
+      produto.descricao = descricao
+      await produto.save();
+    }
+    
+    res.json(produto);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
+
+
 app.put('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
