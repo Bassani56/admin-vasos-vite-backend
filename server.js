@@ -259,7 +259,7 @@ Por ser artesanal, cada peca pode apresentar pequenas variacoes, tornando cada p
 Caso queira um acabamento personalizado, entre em contato conosco para discutir suas preferencias.`;
 
 
-    if (produto.descricao == "") {
+    if (produto.descricao) {
       produto.descricao = descricao
       await produto.save();
     }
