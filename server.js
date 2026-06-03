@@ -248,11 +248,11 @@ app.put('/products/:id/auto-description', async (req, res) => {
 
 Versátil e elegante, é ideal para plantas médias e para compor espaços internos ou externos.
 
-**Material:** Ceramica artesanal
+Material: Ceramica artesanal
 
-**Medidas:** ${[...new Set(produto.variantes.map(v => v.tamanho).filter(t => t))].join(', ')}
+Medidas: ${[...new Set(produto.variantes.map(v => v.tamanho).filter(t => t))].join(', ')}
 
-**Acabamentos disponiveis:** ${[...new Set(produto.variantes.map(v => v.acabamento))].join(', ')}
+Acabamentos disponiveis: ${[...new Set(produto.variantes.map(v => v.acabamento))].join(', ')}
 
 Por ser artesanal, cada peca pode apresentar pequenas variacoes, tornando cada produto unico e especial.
 
