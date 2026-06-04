@@ -272,7 +272,7 @@ app.put('/products/:id/auto-description', async (req, res) => {
 });
 
 
-app.put('/products/:id', async (req, res) => {
+app.put('/produto/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
