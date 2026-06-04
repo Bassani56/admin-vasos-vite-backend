@@ -246,22 +246,23 @@ app.put('/products/:id/auto-description', async (req, res) => {
     
     const descricao = `O ${produto.titulo_geral} combina um visual moderno com textura escovada que destaca sua presença em qualquer ambiente.
 
-Versátil e elegante, é ideal para plantas médias e para compor espaços internos ou externos.
+    Versátil e elegante, é ideal para plantas médias e para compor espaços internos ou externos.
 
-Material: Ceramica artesanal
+    Material: Ceramica artesanal
 
-Medidas: ${[...new Set(produto.variantes.map(v => v.tamanho).filter(t => t))].join(', ')}
+    Medidas: ${[...new Set(produto.variantes.map(v => v.tamanho).filter(t => t))].join(', ')}
 
-Acabamentos disponiveis: ${[...new Set(produto.variantes.map(v => v.acabamento))].join(', ')}
+    Acabamentos disponiveis: ${[...new Set(produto.variantes.map(v => v.acabamento))].join(', ')}
 
-Por ser artesanal, cada peca pode apresentar pequenas variacoes, tornando cada produto unico e especial.
+    Por ser artesanal, cada peca pode apresentar pequenas variacoes, tornando cada produto unico e especial.
 
-Caso queira um acabamento personalizado, entre em contato conosco para discutir suas preferencias.`;
+    Caso queira um acabamento personalizado, entre em contato conosco para discutir suas preferencias.`;
 
 
-    if (produto.descricao) {
+    if (produto) {
       produto.descricao = descricao
       await produto.save();
+      console.log(`Descrição do produto ${produto._id} atualizada com sucesso.`);
     }
     
     res.json(produto);
@@ -275,12 +276,6 @@ app.put('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-
-    // const updated = await Produto.findOneAndUpdate(
-    //   { $or: [{ _id: id }, { id: Number(id) }] },
-    //   updateData,
-    //   { new: true, runValidators: true }
-    // );
 
     const updated = await Produto.findByIdAndUpdate(
   id,
@@ -304,6 +299,7 @@ app.put('/products/:id', async (req, res) => {
     });
   }
 });
+
 
 app.delete('/products/:id', async (req, res) => {
   try {

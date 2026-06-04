@@ -39,6 +39,7 @@ const ProdutoSchema = new mongoose.Schema({
   titulo_geral: { type: String },
   categorias: [{ type: String }],
   descricao: { type: String, default: "" },
+  ordem: { type: Number, default: null },  // ← adicionar aqui
   imagem_geral: [ImagemSchema],
   imagens_por_cor: [CorImagemSchema],
   variantes: [VarianteSchema]
