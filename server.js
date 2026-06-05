@@ -15,6 +15,7 @@ const allowedOrigins = [
     "http://localhost:5173",
     "https://new-vite-vasos-frontend.vercel.app",
     "http://localhost:5174",
+    "https://casadooleiroo.com.br/",
     "https://admin-vasos-vite-frontend.vercel.app",
     ...(process.env.FRONTEND_URL || "")
         .split(",")
