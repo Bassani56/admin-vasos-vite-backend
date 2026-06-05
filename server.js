@@ -301,7 +301,7 @@ app.put('/produto/:id', async (req, res) => {
 });
 
 
-app.delete('/products/:id', async (req, res) => {
+app.delete('/produto/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
