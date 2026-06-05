@@ -16,6 +16,7 @@ const allowedOrigins = [
     "https://new-vite-vasos-frontend.vercel.app",
     "http://localhost:5174",
     "https://casadooleiroo.com.br/",
+    "vite-projeto-vasos-jhdf3dso9-bassani56s-projects.vercel.app",
     "https://admin-vasos-vite-frontend.vercel.app",
     ...(process.env.FRONTEND_URL || "")
         .split(",")
