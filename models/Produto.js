@@ -43,6 +43,7 @@ const ProdutoSchema = new mongoose.Schema({
   codigo: { type: String, default: null },
   novidade: { type: Boolean, default: false },
   personalizavel: { type: Boolean, default: false },
+  destaque: { type: Boolean, default: false },
   imagem_geral: [ImagemSchema],
   imagens_por_cor: [CorImagemSchema],
   variantes: [VarianteSchema]
