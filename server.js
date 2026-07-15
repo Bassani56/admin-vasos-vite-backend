@@ -373,6 +373,32 @@ app.delete('/produto/:id', async (req, res) => {
   }
 });
 
+// Proxy de imagem (CORS fallback para Canvas API no frontend)
+app.get('/proxy-image', async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url) return res.status(400).json({ erro: 'URL obrigatória' });
+
+    // Só permite URLs do nosso bucket S3
+    const allowedHost = `${process.env.AWS3_BUCKET}.s3.${process.env.AWS3_REGION}.amazonaws.com`;
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.host !== allowedHost) {
+      return res.status(403).json({ erro: 'URL não permitida' });
+    }
+
+    const response = await fetch(url);
+    const buffer = Buffer.from(await response.arrayBuffer());
+
+    res.set('Content-Type', response.headers.get('content-type') || 'image/jpeg');
+    res.set('Cache-Control', 'public, max-age=3600');
+    res.send(buffer);
+  } catch (err) {
+    console.error('Proxy image error:', err);
+    res.status(500).json({ erro: 'Erro ao buscar imagem' });
+  }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
