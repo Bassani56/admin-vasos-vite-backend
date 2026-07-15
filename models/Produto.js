@@ -39,13 +39,16 @@ const ProdutoSchema = new mongoose.Schema({
   titulo_geral: { type: String },
   categorias: [{ type: String }],
   descricao: { type: String, default: "" },
-  ordem: { type: Number, default: null },  // ← adicionar aqui
+  ordem: { type: Number, default: null },
+  codigo: { type: String, default: null },
+  novidade: { type: Boolean, default: false },
+  personalizavel: { type: Boolean, default: false },
   imagem_geral: [ImagemSchema],
   imagens_por_cor: [CorImagemSchema],
   variantes: [VarianteSchema]
 }, {
-  collection: "new_cards_json"
+  collection: "new_cards_json",
+  timestamps: true
 })
 
 module.exports = mongoose.model("Produto", ProdutoSchema)
-
